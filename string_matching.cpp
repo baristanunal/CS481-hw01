@@ -8,6 +8,8 @@
 using namespace std;
 using namespace chrono;
 
+const int alphabetSize = 4; // Size of the alphabet (A, C, T, G)
+
 vector<vector<int>> StringMatching::bruteForce(const string& text, const vector<string>& patterns) {
     vector<vector<int>> matches(patterns.size());
 
@@ -23,15 +25,66 @@ vector<vector<int>> StringMatching::bruteForce(const string& text, const vector<
     return matches;
 }
 
+
+int StringMatching::hashFunction(char ch) {
+    // Assign a unique number to each character in the alphabet
+    switch(ch) {
+        case 'A': return 0;
+        case 'C': return 1;
+        case 'T': return 2;
+        case 'G': return 3;
+        default: return -1; // Handle invalid characters
+    }
+}
+
+
 vector<vector<int>> StringMatching::rabinKarp(const string& text, const vector<string>& patterns) {
-    // TODO: Implement Rabin-Karp algorithm
-    // Note: This is a placeholder. You need to complete this function.
+    const int q = 101; // A prime number larger than the alphabet size
+    const int m = patterns[0].size(); // Assuming all patterns have the same size
+
     vector<vector<int>> matches(patterns.size());
-    
-    // Your Rabin-Karp algorithm implementation goes here
-    
+
+    // Calculate the value of c for the hash function
+    int c = 1;
+    for (int i = 0; i < m - 1; ++i) {
+        c = (c * 10) % q;
+    }
+
+    // Preprocessing: Calculate the hash values for the pattern and the first window in the text
+    int fp = 0; // Hash value for the pattern
+    int ft = 0; // Hash value for the first window in the text
+
+    for (int i = 0; i < m; ++i) {
+        fp = (10 * fp + hashFunction(patterns[0][i])) % q;
+        ft = (10 * ft + hashFunction(text[i])) % q;
+    }
+
+    // Matching: Slide the window through the text and check for matches
+    for (int s = 0; s <= text.size() - m; ++s) {
+        if (fp == ft) {
+            // Check character by character for a match
+            bool match = true;
+            for (int i = 0; i < m; ++i) {
+                if (patterns[0][i] != text[s + i]) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+                matches[0].push_back(s + 1); // Adjust index to start from 1
+            }
+        }
+
+        // Update the hash value for the next window in the text
+        ft = ((ft - hashFunction(text[s]) * c) * 10 + hashFunction(text[s + m])) % q;
+        if (ft < 0) {
+            ft += q; // Ensure the hash value is positive
+        }
+    }
+
     return matches;
 }
+
 
 int main(int argc, char* argv[]) {
     if (argc != 7) {
