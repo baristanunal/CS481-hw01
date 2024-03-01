@@ -134,7 +134,10 @@ int main(int argc, char* argv[]) {
     textBuffer << textStream.rdbuf();
     patternsBuffer << patternsStream.rdbuf();
 
+    // Remove newline characters from the text
     string text = textBuffer.str();
+    text.erase(std::remove(text.begin(), text.end(), '\n'), text.end());
+
     vector<string> patterns;
     string pattern;
 
