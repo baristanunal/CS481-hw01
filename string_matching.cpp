@@ -40,17 +40,19 @@ int StringMatching::hashFunction(char ch) {
 
 vector<vector<int>> StringMatching::rabinKarp(const string& text, const vector<string>& patterns) {
     const int q = 101; // A prime number larger than the alphabet size
-    const int m = patterns[0].size(); // Assuming all patterns have the same size
 
     vector<vector<int>> matches(patterns.size());
 
-    // Calculate the value of c for the hash function
-    int c = 1;
-    for (int i = 0; i < m - 1; ++i) {
-        c = (c * 10) % q;
-    }
-
+    // Iterate through all patterns
     for (size_t p = 0; p < patterns.size(); ++p) {
+        const int m = patterns[p].size(); // Length of the current pattern
+
+        // Calculate the value of c for the hash function
+        int c = 1;
+        for (int i = 0; i < m - 1; ++i) {
+            c = (c * 10) % q;
+        }
+
         int fp = 0; // Hash value for the current pattern
         int ft = 0; // Hash value for the first window in the text
 
