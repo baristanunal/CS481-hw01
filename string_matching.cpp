@@ -4,6 +4,8 @@
 #include <fstream>
 #include <sstream>
 #include <chrono>
+#include <iomanip>
+#include <algorithm>
 
 using namespace std;
 using namespace chrono;
@@ -49,11 +51,11 @@ vector<vector<int>> StringMatching::rabinKarp(const string& text, const vector<s
 
     // Iterate through all patterns
     for (size_t p = 0; p < patterns.size(); ++p) {
-        const int m = patterns[p].size(); // Length of the current pattern
+        const size_t m = patterns[p].size(); // Length of the current pattern
 
         // Calculate the value of c for the hash function
         int c = 1;
-        for (int i = 0; i < m - 1; ++i) {
+        for (size_t i = 0; i < m - 1; ++i) {
             c = (c * 10) % q;
         }
 
@@ -61,23 +63,23 @@ vector<vector<int>> StringMatching::rabinKarp(const string& text, const vector<s
         int ft = 0; // Hash value for the first window in the text
 
         // Preprocessing: Calculate the hash values for the pattern and the first window in the text
-        for (int i = 0; i < m; ++i) {
+        for (size_t i = 0; i < m; ++i) {
             fp = (10 * fp + hashFunction(patterns[p][i])) % q;
             ft = (10 * ft + hashFunction(text[i])) % q;
         }
 
         // Matching: Slide the window through the text and check for matches
-        for (int s = 0; s <= text.size() - m; ++s) {
+        for (size_t s = 0; s <= text.size() - m; ++s) {
             if (fp == ft) {
                 bool match = true;
-                for (int i = 0; i < m; ++i) {
+                for (size_t i = 0; i < m; ++i) {
                     if (patterns[p][i] != text[s + i]) {
                         match = false;
                         break;
                     }
                 }
                 if (match) {
-                    matches[p].push_back(s + 1); // Adjust index to start from 1
+                    matches[p].push_back(static_cast<int>(s + 1)); // Adjust index to start from 1
                 }
             }
 
