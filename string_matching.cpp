@@ -20,6 +20,10 @@ vector<vector<int>> StringMatching::bruteForce(const string& text, const vector<
                 matches[i].push_back(static_cast<int>(j + 1)); // Adjust indices to start from 1
             }
         }
+        // If no match is found, add -1 to indicate no match
+        if (matches[i].empty()) {
+            matches[i].push_back(-1);
+        }
     }
 
     return matches;
@@ -84,6 +88,11 @@ vector<vector<int>> StringMatching::rabinKarp(const string& text, const vector<s
                     ft += q; // Ensure the hash value is positive
                 }
             }
+        }
+
+        // If no match is found, add -1 to indicate no match
+        if (matches[p].empty()) {
+            matches[p].push_back(-1);
         }
     }
 
