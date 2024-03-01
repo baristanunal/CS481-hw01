@@ -23,7 +23,7 @@ vector<vector<int>> StringMatching::bruteForce(const string& text, const vector<
     return matches;
 }
 
-vector<vector<int>> StringMatching::robinKarp(const string& text, const vector<string>& patterns) {
+vector<vector<int>> StringMatching::rabinKarp(const string& text, const vector<string>& patterns) {
     // TODO: Implement Rabin-Karp algorithm
     // Note: This is a placeholder. You need to complete this function.
     vector<vector<int>> matches(patterns.size());
@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
     if (method == "BF") {
         matches = StringMatching::bruteForce(text, patterns);
     } else if (method == "RB") {
-        matches = StringMatching::robinKarp(text, patterns);
+        matches = StringMatching::rabinKarp(text, patterns);
     } else {
         cerr << "Invalid method. Use BF for Brute-force or RB for Rabin-Karp.\n";
         return 1;
