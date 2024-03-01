@@ -50,40 +50,44 @@ vector<vector<int>> StringMatching::rabinKarp(const string& text, const vector<s
         c = (c * 10) % q;
     }
 
-    // Preprocessing: Calculate the hash values for the pattern and the first window in the text
-    int fp = 0; // Hash value for the pattern
-    int ft = 0; // Hash value for the first window in the text
+    for (size_t p = 0; p < patterns.size(); ++p) {
+        int fp = 0; // Hash value for the current pattern
+        int ft = 0; // Hash value for the first window in the text
 
-    for (int i = 0; i < m; ++i) {
-        fp = (10 * fp + hashFunction(patterns[0][i])) % q;
-        ft = (10 * ft + hashFunction(text[i])) % q;
-    }
-
-    // Matching: Slide the window through the text and check for matches
-    for (int s = 0; s <= text.size() - m; ++s) {
-        if (fp == ft) {
-            // Check character by character for a match
-            bool match = true;
-            for (int i = 0; i < m; ++i) {
-                if (patterns[0][i] != text[s + i]) {
-                    match = false;
-                    break;
-                }
-            }
-            if (match) {
-                matches[0].push_back(s + 1); // Adjust index to start from 1
-            }
+        // Preprocessing: Calculate the hash values for the pattern and the first window in the text
+        for (int i = 0; i < m; ++i) {
+            fp = (10 * fp + hashFunction(patterns[p][i])) % q;
+            ft = (10 * ft + hashFunction(text[i])) % q;
         }
 
-        // Update the hash value for the next window in the text
-        ft = ((ft - hashFunction(text[s]) * c) * 10 + hashFunction(text[s + m])) % q;
-        if (ft < 0) {
-            ft += q; // Ensure the hash value is positive
+        // Matching: Slide the window through the text and check for matches
+        for (int s = 0; s <= text.size() - m; ++s) {
+            if (fp == ft) {
+                bool match = true;
+                for (int i = 0; i < m; ++i) {
+                    if (patterns[p][i] != text[s + i]) {
+                        match = false;
+                        break;
+                    }
+                }
+                if (match) {
+                    matches[p].push_back(s + 1); // Adjust index to start from 1
+                }
+            }
+
+            // Update the hash value for the next window in the text
+            if (s < text.size() - m) {
+                ft = ((ft - hashFunction(text[s]) * c) * 10 + hashFunction(text[s + m])) % q;
+                if (ft < 0) {
+                    ft += q; // Ensure the hash value is positive
+                }
+            }
         }
     }
 
     return matches;
 }
+
 
 
 int main(int argc, char* argv[]) {
