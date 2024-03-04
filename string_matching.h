@@ -1,4 +1,9 @@
-// string_matching.h
+/*
+# CS481 Homework 1
+# Author:  Barış Tan Ünal
+# Date:   01/03/2024
+# Desc:   This program takes a pattern and a string as input and returns the indices of the string where the pattern is found.
+*/
 #ifndef STRING_MATCHING_H
 #define STRING_MATCHING_H
 

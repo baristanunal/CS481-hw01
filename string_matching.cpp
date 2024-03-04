@@ -1,4 +1,9 @@
-// string_matching.cpp
+/*
+# CS481 Homework 1
+# Author:  Barış Tan Ünal
+# Date:   01/03/2024
+# Desc:   This program takes a pattern and a string as input and returns the indices of the string where the pattern is found.
+*/
 #include "string_matching.h"
 #include <iostream>
 #include <fstream>
@@ -12,6 +17,11 @@ using namespace chrono;
 
 const int alphabetSize = 4; // Size of the alphabet (A, C, T, G)
 
+/*
+    * Brute-force algorithm for string matching
+    * Returns a vector of vectors containing the starting indices of the matches for each pattern
+    * If no match is found, -1 is added to the vector
+*/
 vector<vector<int>> StringMatching::bruteForce(const string& text, const vector<string>& patterns) {
     vector<vector<int>> matches(patterns.size());
 
@@ -32,6 +42,11 @@ vector<vector<int>> StringMatching::bruteForce(const string& text, const vector<
 }
 
 
+/*
+    * Hash function for the Rabin-Karp algorithm
+    * Returns a unique number for each character in the alphabet
+    * A: 0, C: 1, T: 2, G: 3
+*/
 int StringMatching::hashFunction(char ch) {
     // Assign a unique number to each character in the alphabet
     switch(ch) {
@@ -43,7 +58,11 @@ int StringMatching::hashFunction(char ch) {
     }
 }
 
-
+/*
+    * Rabin-Karp algorithm for string matching
+    * Returns a vector of vectors containing the starting indices of the matches for each pattern
+    * If no match is found, -1 is added to the vector
+*/
 vector<vector<int>> StringMatching::rabinKarp(const string& text, const vector<string>& patterns) {
     const int q = 101; // A prime number larger than the alphabet size
 
